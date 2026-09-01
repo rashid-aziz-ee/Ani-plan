@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Info, Plus, Calendar, Droplets, Sun, Sprout, ArrowRight, Shield, ShieldAlert, Check, X, ShieldCheck, Heart, Leaf, Fence, AlertCircle } from "lucide-react";
+import { Search, Info, Plus, Calendar, Droplets, Sun, Sprout, ArrowRight, Shield, ShieldAlert, Check, X, ShieldCheck, Heart, Leaf, Fence, AlertCircle, PawPrint } from "lucide-react";
 import { speciesLibrary } from "../page";
 
 export default function EncyclopediaPage() {
@@ -163,7 +163,7 @@ export default function EncyclopediaPage() {
 
             {/* Yield Line */}
             <div className="px-5 py-3 bg-[#0a1f16] border-t border-b border-[#1a4231] flex items-center gap-3">
-              <Sprout size={14} className="text-emerald-500"/>
+              <PawPrint size={14} className="text-emerald-500"/>
               <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Est. Maintenance:</span>
               <span className="text-xs text-white font-black">{animal.cost}</span>
             </div>
