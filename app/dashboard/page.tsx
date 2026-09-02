@@ -338,13 +338,14 @@ export default function PlannerPage() {
       
       <div className={`bg-[#0f291e] border-[#1a4231] flex flex-col h-full z-20 shadow-2xl relative transition-all duration-300 shrink-0 ${isToolkitOpen ? 'w-[450px] border-r' : 'w-0 overflow-hidden'}`}>
         <div className="w-[450px] flex flex-col h-full">
-          <div className="p-6 border-b border-[#1a4231] bg-[#0f291e] sticky top-0 z-10 flex justify-between items-start">
-            <div>
-              <h2 className="text-xl font-bold text-white mb-1">Enclosure Toolkit</h2>
-              <p className="text-xs text-emerald-200/60 mb-4">Add, remove, or modify animals in your farm</p>
+          <div className="p-6 border-b border-[#1a4231] bg-[#0f291e] sticky top-0 z-10">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h2 className="text-xl font-bold text-white mb-1">Enclosure Toolkit</h2>
+                <p className="text-xs text-emerald-200/60">Add, remove, or modify animals in your farm</p>
+              </div>
             </div>
-          </div>
-          <div className="mb-4 relative z-50">
+            <div className="mb-4 relative z-50">
             <span className="text-[10px] text-emerald-200/70 mb-1 block uppercase tracking-wider">Location (City)</span>
             <input 
               type="text" 
@@ -443,8 +444,8 @@ export default function PlannerPage() {
         <div className="p-6 bg-white border-t border-slate-200">
           <button onClick={generateAutoLayout} disabled={selectedAnimals.length === 0} className="w-full bg-[#143627] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-widest hover:bg-[#1a4231] transition">GENERATE ENCLOSURE</button>
         </div>
-        </div>
       </div>
+    </div>
 
       <button 
         onClick={() => setIsToolkitOpen(!isToolkitOpen)}
