@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ani-plan | Animal Nursery Management",
-  description: "A comprehensive and user-friendly animal nursery and sanctuary management system.",
+  title: "Ani-plan | Veterinary Herd Canvas & Sanctuary Planner",
+  description: "Design true-to-scale farm enclosures, optimize companion animal relationships, and calculate precision space requirements for your sanctuary.",
 };
 
 export default function RootLayout({
