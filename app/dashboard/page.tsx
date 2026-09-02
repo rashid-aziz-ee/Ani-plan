@@ -839,7 +839,7 @@ export default function PlannerPage() {
                 <div className="w-full h-full flex flex-col items-center gap-4">
                   <img 
                     id="visualizer-img"
-                    src={`https://image.pollinations.ai/prompt/${encodeURIComponent(`A breathtaking, vibrant Pixar style 3D render of a joyful farm sanctuary featuring ${selectedAnimals.map(a => { const s = speciesLibrary.find(sp => sp.id === a.id); return s ? `${a.count} ${s.name}s` : '' }).filter(Boolean).join(', ')}. Lush green stylized grass, wooden fences, beautiful rustic red barn, warm golden hour sunlight, blooming wildflowers, magical atmosphere, ultra-detailed, 8k resolution, Unreal Engine 5 render, masterpiece`)}?width=1024&height=576&nologo=true`}
+                    src={`https://image.pollinations.ai/prompt/${encodeURIComponent(`A photorealistic wide-angle shot of an animal sanctuary. EXACTLY THESE ANIMALS MUST BE PRESENT: ${selectedAnimals.map(a => { const s = speciesLibrary.find(sp => sp.id === a.id); return s ? `${a.count} ${s.name}(s)` : '' }).filter(Boolean).join(' AND ')}. The animals are clearly visible and separated in their respective habitats. Natural lighting, realistic photography, highly detailed, nature documentary style`)}?width=1024&height=576&nologo=true`}
                     alt="AI Generated Farm"
                     className="w-full h-auto rounded-xl shadow-2xl border border-emerald-500/20 cursor-pointer"
                     onClick={(e) => e.currentTarget.requestFullscreen()}
