@@ -124,61 +124,62 @@ export default function OnboardingWizard() {
 
   if (step === 0) {
     return (
-      <main className="min-h-screen bg-[#0a1f16] flex items-center justify-center font-sans p-4">
-        <div className="w-full max-w-3xl flex flex-col items-center">
-          <div className="flex items-center gap-3 mb-10">
+      <main className="min-h-screen bg-[#0a1f16] flex items-center justify-center font-sans p-8">
+        <div className="w-full max-w-5xl flex flex-col">
+          
+          <div className="flex items-center gap-3 mb-8 w-full border-b border-[#1a4231] pb-6">
             <div className="p-2 border border-emerald-500/30 rounded-lg text-emerald-400">
               <PawPrint size={24} />
             </div>
             <div>
-              <h2 className="text-white font-bold flex items-center gap-3 text-xl">
+              <h2 className="text-white font-bold flex items-center gap-3 text-2xl">
                 Ani-plan 
-                <span className="bg-emerald-900/50 text-emerald-400 border border-emerald-500/30 text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-full">
+                <span className="bg-emerald-900/50 text-emerald-400 border border-emerald-500/30 text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">
                   Enclosure Onboarding
                 </span>
               </h2>
-              <p className="text-emerald-500/60 text-xs">Precision Farm Canvas & Setup</p>
+              <p className="text-emerald-500/60 text-xs mt-1">Precision Farm Canvas & Setup</p>
             </div>
           </div>
 
-          <div className="bg-gradient-to-b from-[#2e5d42] to-[#143627] border border-[#3e7354] rounded-[2rem] w-full max-w-4xl p-16 text-center shadow-2xl relative overflow-hidden">
-            <div className="absolute top-8 left-1/2 -translate-x-1/2 flex gap-4">
+          <div className="bg-gradient-to-br from-[#2a4531] to-[#14281d] border border-[#3a5c43] rounded-[2rem] w-full p-16 text-center shadow-2xl relative overflow-hidden">
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 flex gap-4">
               <span className="bg-[#143627]/80 backdrop-blur-md text-emerald-400 text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full font-bold flex items-center gap-2 border border-[#1a4231]"><Sparkles size={12}/> VETERINARY HERD CANVAS ENGINE</span>
             </div>
 
-            <h1 className="text-5xl whitespace-nowrap font-serif font-black text-white mt-12 mb-6" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+            <h1 className="text-5xl font-serif font-black text-white mt-16 mb-6 tracking-tight" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
               Ani-plan Enclosure Planner
             </h1>
-            <p className="text-emerald-50 text-base max-w-2xl mx-auto mb-14 leading-relaxed font-medium">
+            <p className="text-emerald-50 text-base max-w-3xl mx-auto mb-16 leading-relaxed font-medium">
               Design true-to-scale farm enclosures, optimize companion animal relationships, calculate precision space requirements, and auto-arrange your ideal high-yield sanctuary.
             </p>
 
-            <div className="flex justify-center gap-6 mb-14 w-full">
-              <div className="bg-[#0a1f16]/60 backdrop-blur-sm border border-[#1a4231] p-4 rounded-xl flex items-center gap-4 text-left w-64 hover:bg-[#0a1f16]/80 transition">
-                <div className="bg-[#143627] border border-[#1a4231] p-2.5 rounded-lg text-[#d9aa55] shadow-inner"><Fence size={20}/></div>
+            <div className="grid grid-cols-3 gap-6 mb-16 w-full max-w-4xl mx-auto">
+              <div className="bg-[#0a1f16]/40 backdrop-blur-sm border border-[#1a4231] p-5 rounded-xl flex items-center gap-4 text-left hover:bg-[#0a1f16]/60 transition">
+                <div className="bg-[#143627] border border-[#1a4231] p-3 rounded-lg text-[#d9aa55] shadow-inner shrink-0"><Fence size={20}/></div>
                 <div>
-                  <h4 className="text-white text-xs font-bold mb-0.5">True Scale Enclosures</h4>
+                  <h4 className="text-white text-sm font-bold mb-1">True Scale Canvas</h4>
                   <p className="text-emerald-500/70 text-[10px]">Precision meter grid</p>
                 </div>
               </div>
-              <div className="bg-[#0a1f16]/60 backdrop-blur-sm border border-[#1a4231] p-4 rounded-xl flex items-center gap-4 text-left w-64 hover:bg-[#0a1f16]/80 transition">
-                <div className="bg-[#143627] border border-[#1a4231] p-2.5 rounded-lg text-emerald-400 shadow-inner"><Heart size={20}/></div>
+              <div className="bg-[#0a1f16]/40 backdrop-blur-sm border border-[#1a4231] p-5 rounded-xl flex items-center gap-4 text-left hover:bg-[#0a1f16]/60 transition">
+                <div className="bg-[#143627] border border-[#1a4231] p-3 rounded-lg text-emerald-400 shadow-inner shrink-0"><Heart size={20}/></div>
                 <div>
-                  <h4 className="text-white text-xs font-bold mb-0.5">Herd Synergy Matrix</h4>
+                  <h4 className="text-white text-sm font-bold mb-1">Companion Matrix</h4>
                   <p className="text-emerald-500/70 text-[10px]">Social & predator defense</p>
                 </div>
               </div>
-              <div className="bg-[#0a1f16]/60 backdrop-blur-sm border border-[#1a4231] p-4 rounded-xl flex items-center gap-4 text-left w-64 hover:bg-[#0a1f16]/80 transition">
-                <div className="bg-[#143627] border border-[#1a4231] p-2.5 rounded-lg text-purple-400 shadow-inner"><Sparkles size={20}/></div>
+              <div className="bg-[#0a1f16]/40 backdrop-blur-sm border border-[#1a4231] p-5 rounded-xl flex items-center gap-4 text-left hover:bg-[#0a1f16]/60 transition">
+                <div className="bg-[#143627] border border-[#1a4231] p-3 rounded-lg text-purple-400 shadow-inner shrink-0"><Sparkles size={20}/></div>
                 <div>
-                  <h4 className="text-white text-xs font-bold mb-0.5">Smart Herd Layout</h4>
-                  <p className="text-emerald-500/70 text-[10px]">Algorithmic animal placement</p>
+                  <h4 className="text-white text-sm font-bold mb-1">Auto-Arrange</h4>
+                  <p className="text-emerald-500/70 text-[10px]">Algorithmic placement</p>
                 </div>
               </div>
             </div>
 
-            <button onClick={handleNext} className="bg-[#facc15] hover:bg-[#eab308] text-[#422006] font-black text-sm px-10 py-4 rounded-xl shadow-[0_0_20px_rgba(250,204,21,0.2)] transition flex items-center justify-center gap-3 mx-auto">
-              <PawPrint size={18} /> Start Planning Your Enclosure <ArrowRight size={18} />
+            <button onClick={handleNext} className="bg-[#facc15] hover:bg-[#eab308] text-[#422006] font-black text-lg px-12 py-4 rounded-xl shadow-[0_0_20px_rgba(250,204,21,0.2)] transition flex items-center justify-center gap-3 mx-auto min-w-[350px]">
+              <PawPrint size={20} /> Start Planning Your Enclosure <ArrowRight size={20} />
             </button>
           </div>
         </div>
