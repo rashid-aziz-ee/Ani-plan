@@ -222,10 +222,10 @@ export default function EncyclopediaPage() {
               {/* Harvest / Output Block */}
               <div className="bg-[#0f1f16] border border-emerald-900/50 rounded-2xl p-5 mb-4 relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <Sprout size={64} className="text-emerald-500"/>
+                  <PawPrint size={64} className="text-emerald-500"/>
                 </div>
                 <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-2 mb-2">
-                  <ArrowRight size={12}/> Expected Output & Yield
+                  <PawPrint size={12}/> Expected Output & Yield
                 </p>
                 <p className="text-white font-black text-lg">Continuous active contribution to sanctuary ecosystem.</p>
               </div>
