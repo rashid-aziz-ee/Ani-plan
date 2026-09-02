@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Info, Leaf, Waves, Minus, Plus, RefreshCw, Box, Heart, Sun, Layers, Save, Trash2, Fence, BarChart3, Clock, X, Wheat, Droplets, Calendar, Maximize, AlertTriangle, ShieldCheck, PawPrint } from "lucide-react";
+import { Info, Waves, Minus, Plus, RefreshCw, Heart, Sun, Layers, Save, Trash2, Fence, X, Wheat, Droplets, Calendar, Maximize, AlertTriangle, ShieldCheck, PawPrint } from "lucide-react";
 
 type AnimalSpecies = { 
   id: string; 
@@ -17,39 +17,45 @@ type AnimalSpecies = {
   description: string;
   companions: string[];
   enemies: string[];
+  careLevel?: string;
+  cost?: string;
+  water?: string;
+  yieldName?: string;
+  yieldValue?: number;
+  heavyWork?: boolean;
 };
 
 export const speciesLibrary: AnimalSpecies[] = [
-  { id: '1', name: 'Sheep', spaceRequired: 20, icon: '🐑', category: 'Livestock', sizeClass: 'w-24 h-24', iconSize: 'text-4xl', feedType: 'Pasture & Hay', growthDays: '150 Days', progressPct: 60, description: 'Provides wool and natural grazing. Excellent for pasture management.', companions: ['Goat', 'Guard Dog', 'Chicken', 'Llama', 'Alpaca', 'Pig'], enemies: ['Wolf', 'Tiger', 'Bear', 'Lion'], careLevel: 'Beginner Friendly', cost: '$45/mo', water: 'Medium' },
-  { id: '2', name: 'Goat', spaceRequired: 15, icon: '🐐', category: 'Livestock', sizeClass: 'w-20 h-20', iconSize: 'text-3xl', feedType: 'Brush & Hay', growthDays: '120 Days', progressPct: 75, description: 'Excellent at clearing brush and weeds. Very curious and active.', companions: ['Sheep', 'Horse', 'Cow', 'Mule', 'Pig'], enemies: ['Wolf', 'Tiger', 'Bear', 'Lion'], careLevel: 'Intermediate', cost: '$40/mo', water: 'Medium' },
-  { id: '3', name: 'Cow', spaceRequired: 60, icon: '🐄', category: 'Livestock', sizeClass: 'w-36 h-36', iconSize: 'text-6xl', feedType: 'Pasture & Silage', growthDays: '700 Days', progressPct: 30, description: 'Large grazing animal. Requires substantial pasture and fencing.', companions: ['Horse', 'Goat', 'Pig', 'Mule'], enemies: ['Wolf', 'Tiger', 'Bear', 'Lion'], careLevel: 'Advanced', cost: '$120/mo', water: 'High' },
-  { id: '4', name: 'Buffalo', spaceRequired: 70, icon: '🐃', category: 'Livestock', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Grass & Forage', growthDays: '800 Days', progressPct: 20, description: 'Requires very sturdy fencing and access to mud wallows/water.', companions: ['Cow', 'Elephant'], enemies: ['Tiger', 'Lion'], careLevel: 'Advanced', cost: '$150/mo', water: 'Very High' },
-  { id: '5', name: 'Horse', spaceRequired: 80, icon: '🐎', category: 'Livestock', sizeClass: 'w-36 h-36', iconSize: 'text-6xl', feedType: 'Hay & Grain', growthDays: 'Adult', progressPct: 100, description: 'Requires large running space, strong fencing, and daily grooming.', companions: ['Goat', 'Cow', 'Donkey', 'Mule'], enemies: ['Wolf', 'Bear'], careLevel: 'Advanced', cost: '$200/mo', water: 'High' },
-  { id: '6', name: 'Donkey', spaceRequired: 40, icon: '🫏', category: 'Working', sizeClass: 'w-28 h-28', iconSize: 'text-5xl', feedType: 'Hay & Grass', growthDays: 'Adult', progressPct: 100, description: 'Excellent guard animals for livestock. Highly intelligent and hardy.', companions: ['Sheep', 'Horse', 'Alpaca'], enemies: ['Wolf'], careLevel: 'Intermediate', cost: '$50/mo', water: 'Low' },
-  { id: '7', name: 'Chicken', spaceRequired: 4, icon: '🐔', category: 'Poultry', sizeClass: 'w-12 h-12', iconSize: 'text-xl', feedType: 'Grain & Crumbles', growthDays: '45 Days', progressPct: 85, description: 'Provides daily eggs and pest control. Needs a secure coop.', companions: ['Duck', 'Sheep', 'Goat', 'Turkey', 'Guinea Fowl'], enemies: ['Cat', 'Wolf', 'Fox'], careLevel: 'Beginner Friendly', cost: '$15/mo', water: 'Low' },
-  { id: '8', name: 'Duck', spaceRequired: 6, icon: '🦆', category: 'Poultry', sizeClass: 'w-14 h-14', iconSize: 'text-2xl', feedType: 'Pellets & Greens', growthDays: '50 Days', progressPct: 65, description: 'Excellent for slug control. Requires a water source for bathing.', companions: ['Chicken', 'Goose'], enemies: ['Cat', 'Wolf', 'Fox'], careLevel: 'Beginner Friendly', cost: '$20/mo', water: 'High' },
-  { id: '9', name: 'Ostrich', spaceRequired: 45, icon: '🦤', category: 'Poultry', sizeClass: 'w-32 h-32', iconSize: 'text-6xl', feedType: 'Plants & Insects', growthDays: '365 Days', progressPct: 100, description: 'Largest living bird. Very fast, requires strong, tall fencing.', companions: ['Zebra', 'Emu'], enemies: ['Lion', 'Tiger'], careLevel: 'Advanced', cost: '$80/mo', water: 'Low' },
-  { id: '10', name: 'Peacock', spaceRequired: 15, icon: '🦚', category: 'Poultry', sizeClass: 'w-20 h-20', iconSize: 'text-4xl', feedType: 'Seeds & Insects', growthDays: '200 Days', progressPct: 90, description: 'Ornamental bird. Needs roosting trees and large aviaries.', companions: ['Chicken', 'Turkey'], enemies: ['Cat', 'Wolf'], careLevel: 'Intermediate', cost: '$30/mo', water: 'Medium' },
-  { id: '11', name: 'Guard Dog', spaceRequired: 25, icon: '🐕', category: 'Working', sizeClass: 'w-28 h-28', iconSize: 'text-5xl', feedType: 'Meat & Kibble', growthDays: 'Adult', progressPct: 100, description: 'Protects livestock from predators. Highly loyal and alert.', companions: ['Sheep', 'Goat', 'Cow', 'Pig', 'Alpaca'], enemies: ['Wolf', 'Tiger', 'Cat', 'Bear'], careLevel: 'Intermediate', cost: '$60/mo', water: 'Medium' },
-  { id: '12', name: 'Cat', spaceRequired: 10, icon: '🐈', category: 'Working', sizeClass: 'w-16 h-16', iconSize: 'text-2xl', feedType: 'Meat & Fish', growthDays: 'Adult', progressPct: 100, description: 'Excellent barn cat for rodent control. Very independent.', companions: ['Horse', 'Cow', 'Pig'], enemies: ['Guard Dog', 'Chicken', 'Parrot', 'Quail'], careLevel: 'Beginner Friendly', cost: '$20/mo', water: 'Low' },
-  { id: '13', name: 'Parrot', spaceRequired: 5, icon: '🦜', category: 'Exotic', sizeClass: 'w-12 h-12', iconSize: 'text-xl', feedType: 'Seeds & Fruits', growthDays: 'Adult', progressPct: 100, description: 'Highly intelligent and vocal. Needs extensive enrichment.', companions: [], enemies: ['Cat'], careLevel: 'Advanced', cost: '$40/mo', water: 'Low' },
-  { id: '14', name: 'Camel', spaceRequired: 70, icon: '🐪', category: 'Exotic', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Dry Foliage', growthDays: 'Adult', progressPct: 100, description: 'Desert adapted. Requires specialized dry environments.', companions: ['Donkey'], enemies: ['Tiger', 'Lion'], careLevel: 'Intermediate', cost: '$90/mo', water: 'Very Low' },
-  { id: '15', name: 'Wolf', spaceRequired: 100, icon: '🐺', category: 'Wild', sizeClass: 'w-32 h-32', iconSize: 'text-6xl', feedType: 'Raw Meat', growthDays: 'Adult', progressPct: 100, description: 'Apex pack predators. Requires highly specialized, fortified enclosures.', companions: [], enemies: ['Guard Dog', 'Sheep', 'Goat', 'Cow', 'Buffalo', 'Horse', 'Pig', 'Llama', 'Alpaca', 'Deer', 'Mule'], careLevel: 'Expert', cost: '$180/mo', water: 'Medium' },
-  { id: '16', name: 'Deer', spaceRequired: 150, icon: '🦌', category: 'Wild', sizeClass: 'w-32 h-32', iconSize: 'text-6xl', feedType: 'Forage & Leaves', growthDays: 'Adult', progressPct: 100, description: 'Flighty herbivores that can jump extremely high. Requires 8ft+ fencing and forest cover.', companions: [], enemies: ['Wolf', 'Tiger', 'Bear', 'Lion'], careLevel: 'Advanced', cost: '$90/mo', water: 'Medium' },
-  { id: '17', name: 'Tiger', spaceRequired: 200, icon: '🐅', category: 'Wild', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Heavy Meat', growthDays: 'Adult', progressPct: 100, description: 'Massive solitary predators. Extreme containment protocols and vast space required.', companions: [], enemies: ['Cow', 'Buffalo', 'Deer', 'Sheep', 'Goat', 'Horse', 'Pig'], careLevel: 'Expert', cost: '$300/mo', water: 'High' },
-  { id: '18', name: 'Elephant', spaceRequired: 500, icon: '🐘', category: 'Wild', sizeClass: 'w-56 h-56', iconSize: 'text-8xl', feedType: 'Vegetation & Hay', growthDays: 'Adult', progressPct: 100, description: 'Highly social megafauna. Needs reinforced containment, massive dietary intake, and social enrichment.', companions: ['Buffalo'], enemies: ['Tiger', 'Lion'], careLevel: 'Expert', cost: '$800/mo', water: 'Very High' },
-  { id: '19', name: 'Pig', spaceRequired: 25, icon: '🐖', category: 'Livestock', sizeClass: 'w-24 h-24', iconSize: 'text-4xl', feedType: 'Omnivore Mix', growthDays: '180 Days', progressPct: 50, description: 'Highly intelligent and sociable. Needs mud wallows for cooling.', companions: ['Cow', 'Sheep', 'Goat', 'Chicken'], enemies: ['Wolf', 'Tiger', 'Bear'], careLevel: 'Intermediate', cost: '$60/mo', water: 'High' },
-  { id: '20', name: 'Alpaca', spaceRequired: 15, icon: '🦙', category: 'Livestock', sizeClass: 'w-24 h-24', iconSize: 'text-4xl', feedType: 'Pasture', growthDays: '365 Days', progressPct: 40, description: 'Produces fine fleece. Gentle herd animals that require companions.', companions: ['Llama', 'Sheep', 'Donkey'], enemies: ['Wolf', 'Bear'], careLevel: 'Intermediate', cost: '$50/mo', water: 'Medium' },
-  { id: '21', name: 'Llama', spaceRequired: 25, icon: '🦙', category: 'Livestock', sizeClass: 'w-28 h-28', iconSize: 'text-5xl', feedType: 'Pasture', growthDays: '365 Days', progressPct: 40, description: 'Larger than alpacas, often used as guard animals for smaller livestock.', companions: ['Alpaca', 'Sheep', 'Goat'], enemies: ['Wolf', 'Bear'], careLevel: 'Intermediate', cost: '$60/mo', water: 'Medium' },
-  { id: '22', name: 'Turkey', spaceRequired: 8, icon: '🦃', category: 'Poultry', sizeClass: 'w-16 h-16', iconSize: 'text-3xl', feedType: 'Poultry Feed', growthDays: '140 Days', progressPct: 70, description: 'Large poultry bird. Needs sturdy roosts and predator protection.', companions: ['Chicken', 'Peacock'], enemies: ['Fox', 'Wolf', 'Cat'], careLevel: 'Intermediate', cost: '$25/mo', water: 'Medium' },
-  { id: '23', name: 'Goose', spaceRequired: 10, icon: '🪿', category: 'Poultry', sizeClass: 'w-16 h-16', iconSize: 'text-3xl', feedType: 'Grass & Grain', growthDays: '120 Days', progressPct: 80, description: 'Excellent "watchdogs" that honk at intruders. Needs water access.', companions: ['Duck'], enemies: ['Fox', 'Wolf'], careLevel: 'Intermediate', cost: '$25/mo', water: 'High' },
-  { id: '24', name: 'Quail', spaceRequired: 2, icon: '🐦', category: 'Poultry', sizeClass: 'w-10 h-10', iconSize: 'text-lg', feedType: 'Gamebird Feed', growthDays: '40 Days', progressPct: 90, description: 'Small gamebirds. Require highly secure enclosures to prevent escape.', companions: [], enemies: ['Cat', 'Fox', 'Snake'], careLevel: 'Beginner Friendly', cost: '$10/mo', water: 'Low' },
-  { id: '25', name: 'Mule', spaceRequired: 60, icon: '🐴', category: 'Working', sizeClass: 'w-32 h-32', iconSize: 'text-5xl', feedType: 'Hay & Grass', growthDays: 'Adult', progressPct: 100, description: 'Strong, hardy hybrid. Excellent working animal with high stamina.', companions: ['Horse', 'Donkey', 'Cow'], enemies: ['Wolf', 'Bear'], careLevel: 'Intermediate', cost: '$120/mo', water: 'High' },
-  { id: '26', name: 'Collie', spaceRequired: 30, icon: '🐶', category: 'Working', sizeClass: 'w-24 h-24', iconSize: 'text-4xl', feedType: 'High-Protein Kibble', growthDays: 'Adult', progressPct: 100, description: 'Energetic herding dog. Essential for managing large sheep flocks.', companions: ['Sheep', 'Goat', 'Guard Dog'], enemies: ['Wolf', 'Tiger'], careLevel: 'Advanced', cost: '$80/mo', water: 'Medium' },
-  { id: '27', name: 'Emu', spaceRequired: 40, icon: '🦤', category: 'Exotic', sizeClass: 'w-28 h-28', iconSize: 'text-5xl', feedType: 'Omnivore Pellets', growthDays: '500 Days', progressPct: 80, description: 'Curious Australian flightless bird. Fast runners, need tall fences.', companions: ['Ostrich', 'Kangaroo'], enemies: ['Tiger', 'Lion'], careLevel: 'Advanced', cost: '$70/mo', water: 'Medium' },
-  { id: '28', name: 'Kangaroo', spaceRequired: 60, icon: '🦘', category: 'Exotic', sizeClass: 'w-32 h-32', iconSize: 'text-5xl', feedType: 'Grass & Shrubs', growthDays: 'Adult', progressPct: 100, description: 'Marsupial grazer. Can jump extremely high; requires specialized fencing.', companions: ['Emu'], enemies: ['Lion', 'Tiger'], careLevel: 'Expert', cost: '$100/mo', water: 'Low' },
-  { id: '29', name: 'Lion', spaceRequired: 250, icon: '🦁', category: 'Wild', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Raw Meat', growthDays: 'Adult', progressPct: 100, description: 'Social apex predators (prides). Extreme security protocols required.', companions: [], enemies: ['Buffalo', 'Elephant', 'Ostrich', 'Deer', 'Cow', 'Sheep'], careLevel: 'Expert', cost: '$350/mo', water: 'High' },
-  { id: '30', name: 'Bear', spaceRequired: 200, icon: '🐻', category: 'Wild', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Omnivore Diet', growthDays: 'Adult', progressPct: 100, description: 'Massive, highly intelligent omnivores. Can climb and dig; extreme containment needed.', companions: [], enemies: ['Horse', 'Cow', 'Deer', 'Sheep', 'Goat', 'Pig'], careLevel: 'Expert', cost: '$250/mo', water: 'High' }
+  { id: '1', name: 'Sheep', spaceRequired: 20, icon: '🐑', category: 'Livestock', sizeClass: 'w-24 h-24', iconSize: 'text-4xl', feedType: 'Pasture & Hay', growthDays: '150 Days', progressPct: 60, description: 'Provides wool and natural grazing.', companions: ['Goat', 'Guard Dog', 'Chicken', 'Llama', 'Alpaca', 'Pig', 'Collie', 'Mule', 'Donkey', 'Cow', 'Horse'], enemies: ['Wolf', 'Tiger', 'Bear', 'Lion'], careLevel: 'Beginner Friendly', cost: '$45/mo', water: 'Medium', yieldName: 'Wool', yieldValue: 60 },
+  { id: '2', name: 'Goat', spaceRequired: 15, icon: '🐐', category: 'Livestock', sizeClass: 'w-20 h-20', iconSize: 'text-3xl', feedType: 'Brush & Hay', growthDays: '120 Days', progressPct: 75, description: 'Excellent at clearing brush and weeds.', companions: ['Sheep', 'Horse', 'Cow', 'Mule', 'Pig', 'Llama', 'Alpaca', 'Collie', 'Guard Dog', 'Donkey', 'Chicken'], enemies: ['Wolf', 'Tiger', 'Bear', 'Lion'], careLevel: 'Intermediate', cost: '$40/mo', water: 'Medium', yieldName: 'Milk/Dairy', yieldValue: 55 },
+  { id: '3', name: 'Cow', spaceRequired: 60, icon: '🐄', category: 'Livestock', sizeClass: 'w-36 h-36', iconSize: 'text-6xl', feedType: 'Pasture & Silage', growthDays: '700 Days', progressPct: 30, description: 'Large grazing animal.', companions: ['Horse', 'Goat', 'Pig', 'Mule', 'Sheep', 'Donkey', 'Chicken', 'Guard Dog'], enemies: ['Wolf', 'Tiger', 'Bear', 'Lion'], careLevel: 'Advanced', cost: '$120/mo', water: 'High', yieldName: 'Milk/Dairy', yieldValue: 180 },
+  { id: '4', name: 'Buffalo', spaceRequired: 70, icon: '🐃', category: 'Livestock', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Grass & Forage', growthDays: '800 Days', progressPct: 20, description: 'Requires very sturdy fencing.', companions: ['Cow', 'Elephant', 'Ostrich', 'Emu'], enemies: ['Tiger', 'Lion'], careLevel: 'Advanced', cost: '$150/mo', water: 'Very High', yieldName: 'Rich Milk', yieldValue: 220 },
+  { id: '5', name: 'Horse', spaceRequired: 80, icon: '🐎', category: 'Livestock', sizeClass: 'w-36 h-36', iconSize: 'text-6xl', feedType: 'Hay & Grain', growthDays: 'Adult', progressPct: 100, description: 'Requires large running space.', companions: ['Goat', 'Cow', 'Donkey', 'Mule', 'Sheep', 'Chicken', 'Cat'], enemies: ['Wolf', 'Bear'], careLevel: 'Advanced', cost: '$200/mo', water: 'High', yieldName: 'Riding/Work', yieldValue: 100 },
+  { id: '6', name: 'Donkey', spaceRequired: 40, icon: '🫏', category: 'Working', sizeClass: 'w-28 h-28', iconSize: 'text-5xl', feedType: 'Hay & Grass', growthDays: 'Adult', progressPct: 100, description: 'Excellent guard animals for livestock.', companions: ['Sheep', 'Horse', 'Alpaca', 'Cow', 'Llama', 'Mule', 'Goat', 'Chicken'], enemies: ['Wolf'], careLevel: 'Intermediate', cost: '$50/mo', water: 'Low', yieldName: 'Draft/Guard', yieldValue: 80 },
+  { id: '7', name: 'Chicken', spaceRequired: 4, icon: '🐔', category: 'Poultry', sizeClass: 'w-12 h-12', iconSize: 'text-xl', feedType: 'Grain & Crumbles', growthDays: '45 Days', progressPct: 85, description: 'Provides daily eggs.', companions: ['Duck', 'Sheep', 'Goat', 'Turkey', 'Goose', 'Quail', 'Peacock', 'Cow', 'Horse', 'Donkey'], enemies: ['Cat', 'Wolf', 'Fox'], careLevel: 'Beginner Friendly', cost: '$15/mo', water: 'Low', yieldName: 'Eggs', yieldValue: 30 },
+  { id: '8', name: 'Duck', spaceRequired: 6, icon: '🦆', category: 'Poultry', sizeClass: 'w-14 h-14', iconSize: 'text-2xl', feedType: 'Pellets & Greens', growthDays: '50 Days', progressPct: 65, description: 'Excellent for slug control.', companions: ['Chicken', 'Goose', 'Turkey', 'Peacock', 'Quail', 'Pig'], enemies: ['Cat', 'Wolf', 'Fox'], careLevel: 'Beginner Friendly', cost: '$20/mo', water: 'High', yieldName: 'Eggs/Feathers', yieldValue: 35 },
+  { id: '9', name: 'Ostrich', spaceRequired: 45, icon: '🦤', category: 'Poultry', sizeClass: 'w-32 h-32', iconSize: 'text-6xl', feedType: 'Plants & Insects', growthDays: '365 Days', progressPct: 100, description: 'Largest living bird.', companions: ['Emu', 'Kangaroo', 'Camel', 'Buffalo'], enemies: ['Lion', 'Tiger', 'Wolf'], careLevel: 'Advanced', cost: '$80/mo', water: 'Low', yieldName: 'Eggs/Tourism', yieldValue: 120 },
+  { id: '10', name: 'Peacock', spaceRequired: 15, icon: '🦚', category: 'Poultry', sizeClass: 'w-20 h-20', iconSize: 'text-4xl', feedType: 'Seeds & Insects', growthDays: '200 Days', progressPct: 90, description: 'Ornamental bird.', companions: ['Chicken', 'Turkey', 'Duck', 'Goose', 'Parrot'], enemies: ['Cat', 'Wolf'], careLevel: 'Intermediate', cost: '$30/mo', water: 'Medium', yieldName: 'Ornamental Feathers', yieldValue: 40 },
+  { id: '11', name: 'Guard Dog', spaceRequired: 25, icon: '🐕', category: 'Working', sizeClass: 'w-28 h-28', iconSize: 'text-5xl', feedType: 'Meat & Kibble', growthDays: 'Adult', progressPct: 100, description: 'Protects livestock from predators.', companions: ['Sheep', 'Goat', 'Cow', 'Pig', 'Alpaca', 'Llama', 'Chicken', 'Turkey', 'Collie'], enemies: ['Wolf', 'Tiger', 'Cat', 'Bear'], careLevel: 'Intermediate', cost: '$60/mo', water: 'Medium', yieldName: 'Security/Protection', yieldValue: 90 },
+  { id: '12', name: 'Cat', spaceRequired: 10, icon: '🐈', category: 'Working', sizeClass: 'w-16 h-16', iconSize: 'text-2xl', feedType: 'Meat & Fish', growthDays: 'Adult', progressPct: 100, description: 'Excellent barn cat.', companions: ['Horse', 'Cow', 'Pig', 'Mule', 'Donkey'], enemies: ['Guard Dog', 'Chicken', 'Parrot', 'Quail', 'Duck', 'Goose'], careLevel: 'Beginner Friendly', cost: '$20/mo', water: 'Low', yieldName: 'Pest Control', yieldValue: 30 },
+  { id: '13', name: 'Parrot', spaceRequired: 5, icon: '🦜', category: 'Exotic', sizeClass: 'w-12 h-12', iconSize: 'text-xl', feedType: 'Seeds & Fruits', growthDays: 'Adult', progressPct: 100, description: 'Highly intelligent and vocal.', companions: ['Peacock'], enemies: ['Cat'], careLevel: 'Advanced', cost: '$40/mo', water: 'Low', yieldName: 'Tourism/Breeding', yieldValue: 50 },
+  { id: '14', name: 'Camel', spaceRequired: 70, icon: '🐪', category: 'Exotic', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Dry Foliage', growthDays: 'Adult', progressPct: 100, description: 'Desert adapted.', companions: ['Donkey', 'Ostrich', 'Emu', 'Elephant'], enemies: ['Tiger', 'Lion'], careLevel: 'Intermediate', cost: '$90/mo', water: 'Very Low', yieldName: 'Wool/Milk', yieldValue: 140 },
+  { id: '15', name: 'Wolf', spaceRequired: 100, icon: '🐺', category: 'Wild', sizeClass: 'w-32 h-32', iconSize: 'text-6xl', feedType: 'Raw Meat', growthDays: 'Adult', progressPct: 100, description: 'Apex pack predators.', companions: [], enemies: ['Guard Dog', 'Sheep', 'Goat', 'Cow', 'Buffalo', 'Horse', 'Pig', 'Llama', 'Alpaca', 'Deer', 'Mule', 'Chicken', 'Duck', 'Ostrich'], careLevel: 'Expert', cost: '$180/mo', water: 'Medium', yieldName: 'Conservation/Eco', yieldValue: 150 },
+  { id: '16', name: 'Deer', spaceRequired: 150, icon: '🦌', category: 'Wild', sizeClass: 'w-32 h-32', iconSize: 'text-6xl', feedType: 'Forage & Leaves', growthDays: 'Adult', progressPct: 100, description: 'Flighty herbivores.', companions: ['Kangaroo', 'Emu'], enemies: ['Wolf', 'Tiger', 'Bear', 'Lion'], careLevel: 'Advanced', cost: '$90/mo', water: 'Medium', yieldName: 'Eco-Tourism', yieldValue: 80 },
+  { id: '17', name: 'Tiger', spaceRequired: 200, icon: '🐅', category: 'Wild', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Heavy Meat', growthDays: 'Adult', progressPct: 100, description: 'Massive solitary predators.', companions: [], enemies: ['Cow', 'Buffalo', 'Deer', 'Sheep', 'Goat', 'Horse', 'Pig', 'Camel', 'Elephant'], careLevel: 'Expert', cost: '$300/mo', water: 'High', yieldName: 'Sanctuary Donor ROI', yieldValue: 400 },
+  { id: '18', name: 'Elephant', spaceRequired: 500, icon: '🐘', category: 'Wild', sizeClass: 'w-56 h-56', iconSize: 'text-8xl', feedType: 'Vegetation & Hay', growthDays: 'Adult', progressPct: 100, description: 'Highly social megafauna.', companions: ['Buffalo', 'Camel'], enemies: ['Tiger', 'Lion'], careLevel: 'Expert', cost: '$800/mo', water: 'Very High', yieldName: 'Sanctuary Donor ROI', yieldValue: 1000 },
+  { id: '19', name: 'Pig', spaceRequired: 25, icon: '🐖', category: 'Livestock', sizeClass: 'w-24 h-24', iconSize: 'text-4xl', feedType: 'Omnivore Mix', growthDays: '180 Days', progressPct: 50, description: 'Highly intelligent and sociable.', companions: ['Cow', 'Sheep', 'Goat', 'Chicken', 'Duck', 'Guard Dog'], enemies: ['Wolf', 'Tiger', 'Bear'], careLevel: 'Intermediate', cost: '$60/mo', water: 'High', yieldName: 'Fertilizer/Truffles', yieldValue: 90 },
+  { id: '20', name: 'Alpaca', spaceRequired: 15, icon: '🦙', category: 'Livestock', sizeClass: 'w-24 h-24', iconSize: 'text-4xl', feedType: 'Pasture', growthDays: '365 Days', progressPct: 40, description: 'Produces fine fleece.', companions: ['Llama', 'Sheep', 'Donkey', 'Guard Dog', 'Collie', 'Goat'], enemies: ['Wolf', 'Bear'], careLevel: 'Intermediate', cost: '$50/mo', water: 'Medium', yieldName: 'Premium Fleece', yieldValue: 80 },
+  { id: '21', name: 'Llama', spaceRequired: 25, icon: '🦙', category: 'Livestock', sizeClass: 'w-28 h-28', iconSize: 'text-5xl', feedType: 'Pasture', growthDays: '365 Days', progressPct: 40, description: 'Larger than alpacas, often guard animals.', companions: ['Alpaca', 'Sheep', 'Goat', 'Guard Dog', 'Collie', 'Donkey'], enemies: ['Wolf', 'Bear'], careLevel: 'Intermediate', cost: '$60/mo', water: 'Medium', yieldName: 'Fleece/Packing', yieldValue: 85 },
+  { id: '22', name: 'Turkey', spaceRequired: 8, icon: '🦃', category: 'Poultry', sizeClass: 'w-16 h-16', iconSize: 'text-3xl', feedType: 'Poultry Feed', growthDays: '140 Days', progressPct: 70, description: 'Large poultry bird.', companions: ['Chicken', 'Peacock', 'Duck', 'Goose', 'Guard Dog'], enemies: ['Fox', 'Wolf', 'Cat'], careLevel: 'Intermediate', cost: '$25/mo', water: 'Medium', yieldName: 'Eggs/Feathers', yieldValue: 40 },
+  { id: '23', name: 'Goose', spaceRequired: 10, icon: '🪿', category: 'Poultry', sizeClass: 'w-16 h-16', iconSize: 'text-3xl', feedType: 'Grass & Grain', growthDays: '120 Days', progressPct: 80, description: 'Excellent "watchdogs".', companions: ['Duck', 'Chicken', 'Turkey', 'Peacock'], enemies: ['Fox', 'Wolf', 'Cat'], careLevel: 'Intermediate', cost: '$25/mo', water: 'High', yieldName: 'Eggs/Security', yieldValue: 35 },
+  { id: '24', name: 'Quail', spaceRequired: 2, icon: '🐦', category: 'Poultry', sizeClass: 'w-10 h-10', iconSize: 'text-lg', feedType: 'Gamebird Feed', growthDays: '40 Days', progressPct: 90, description: 'Small gamebirds.', companions: ['Chicken', 'Duck'], enemies: ['Cat', 'Fox', 'Snake'], careLevel: 'Beginner Friendly', cost: '$10/mo', water: 'Low', yieldName: 'Gourmet Eggs', yieldValue: 20 },
+  { id: '25', name: 'Mule', spaceRequired: 60, icon: '🐴', category: 'Working', sizeClass: 'w-32 h-32', iconSize: 'text-5xl', feedType: 'Hay & Grass', growthDays: 'Adult', progressPct: 100, description: 'Strong, hardy hybrid.', companions: ['Horse', 'Donkey', 'Cow', 'Goat', 'Sheep', 'Cat'], enemies: ['Wolf', 'Bear'], careLevel: 'Intermediate', cost: '$120/mo', water: 'High', heavyWork: true, yieldName: 'Draft Power', yieldValue: 160 },
+  { id: '26', name: 'Collie', spaceRequired: 30, icon: '🐶', category: 'Working', sizeClass: 'w-24 h-24', iconSize: 'text-4xl', feedType: 'High-Protein Kibble', growthDays: 'Adult', progressPct: 100, description: 'Energetic herding dog.', companions: ['Sheep', 'Goat', 'Guard Dog', 'Alpaca', 'Llama'], enemies: ['Wolf', 'Tiger'], careLevel: 'Advanced', cost: '$80/mo', water: 'Medium', yieldName: 'Herding Labor', yieldValue: 120 },
+  { id: '27', name: 'Emu', spaceRequired: 40, icon: '🦤', category: 'Exotic', sizeClass: 'w-28 h-28', iconSize: 'text-5xl', feedType: 'Omnivore Pellets', growthDays: '500 Days', progressPct: 80, description: 'Curious Australian flightless bird.', companions: ['Ostrich', 'Kangaroo', 'Camel', 'Deer'], enemies: ['Tiger', 'Lion', 'Wolf'], careLevel: 'Advanced', cost: '$70/mo', water: 'Medium', yieldName: 'Oils/Tourism', yieldValue: 90 },
+  { id: '28', name: 'Kangaroo', spaceRequired: 60, icon: '🦘', category: 'Exotic', sizeClass: 'w-32 h-32', iconSize: 'text-5xl', feedType: 'Grass & Shrubs', growthDays: 'Adult', progressPct: 100, description: 'Marsupial grazer.', companions: ['Emu', 'Ostrich', 'Deer'], enemies: ['Lion', 'Tiger', 'Wolf'], careLevel: 'Expert', cost: '$100/mo', water: 'Low', yieldName: 'Eco-Tourism', yieldValue: 130 },
+  { id: '29', name: 'Lion', spaceRequired: 250, icon: '🦁', category: 'Wild', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Raw Meat', growthDays: 'Adult', progressPct: 100, description: 'Social apex predators.', companions: [], enemies: ['Buffalo', 'Elephant', 'Ostrich', 'Deer', 'Cow', 'Sheep', 'Goat'], careLevel: 'Expert', cost: '$350/mo', water: 'High', yieldName: 'Conservation Grant', yieldValue: 500 },
+  { id: '30', name: 'Bear', spaceRequired: 200, icon: '🐻', category: 'Wild', sizeClass: 'w-40 h-40', iconSize: 'text-7xl', feedType: 'Omnivore Diet', growthDays: 'Adult', progressPct: 100, description: 'Massive, highly intelligent omnivores.', companions: [], enemies: ['Horse', 'Cow', 'Deer', 'Sheep', 'Goat', 'Pig', 'Alpaca'], careLevel: 'Expert', cost: '$250/mo', water: 'High', yieldName: 'Conservation Grant', yieldValue: 350 }
 ];
 
 export default function PlannerPage() {
@@ -66,7 +72,56 @@ export default function PlannerPage() {
   const [showSetupModal, setShowSetupModal] = useState(false);
   const [timelineProgress, setTimelineProgress] = useState(50);
   const [enclosureType, setEnclosureType] = useState('Standard Pasture');
+  const [weather, setWeather] = useState<{temp: number, isHot: boolean, city: string} | null>(null);
+  const [locationQuery, setLocationQuery] = useState('Mianwali');
+  const [locationResults, setLocationResults] = useState<any[]>([]);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [showTasksModal, setShowTasksModal] = useState(false);
+  const [showVisualizerModal, setShowVisualizerModal] = useState(false);
+  const [isVisualizerLoading, setIsVisualizerLoading] = useState(false);
+  const [isToolkitOpen, setIsToolkitOpen] = useState(true);
   const canvasRef = useRef<HTMLDivElement>(null);
+
+  const fetchWeatherForCoords = (lat: number, lon: number, name: string) => {
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.current_weather) {
+           const temp = data.current_weather.temperature;
+           setWeather({ temp, isHot: temp > 35, city: name });
+        }
+      })
+      .catch(e => console.error("Weather fetch failed", e));
+  };
+
+  const handleLocationSearch = (query: string) => {
+    setLocationQuery(query);
+    if (query.length < 3) {
+      setLocationResults([]);
+      setShowLocationDropdown(false);
+      return;
+    }
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5`)
+      .then(res => res.json())
+      .then(geo => {
+        if (geo.results) {
+          setLocationResults(geo.results);
+          setShowLocationDropdown(true);
+        } else {
+          setLocationResults([]);
+        }
+      });
+  };
+
+  const selectLocation = (result: any) => {
+    setLocationQuery(result.name);
+    setShowLocationDropdown(false);
+    fetchWeatherForCoords(result.latitude, result.longitude, result.name);
+  };
+
+  useEffect(() => {
+    fetchWeatherForCoords(32.5839, 71.537, 'Mianwali'); // Default
+  }, []);
 
   useEffect(() => {
     const loadData = () => {
@@ -254,7 +309,22 @@ export default function PlannerPage() {
   const validLength = Number(length) > 0 ? Number(length) : 1;
   const canvasRatio = `${validWidth} / ${validLength}`;
 
-  const infoSpecies = null;
+  const infoSpecies = infoModalId ? speciesLibrary.find(s => s.id === infoModalId) : null;
+
+  const estMonthlyCost = selectedAnimals.reduce((total, item) => {
+    const sp = speciesLibrary.find(s => s.id === item.id);
+    if (!sp || !sp.cost) return total;
+    const costNum = parseInt(sp.cost.replace(/[^0-9]/g, '')) || 0;
+    return total + (costNum * item.count);
+  }, 0);
+
+  const estMonthlyRevenue = selectedAnimals.reduce((total, item) => {
+    const sp = speciesLibrary.find(s => s.id === item.id);
+    if (!sp || !sp.yieldValue) return total;
+    return total + (sp.yieldValue * item.count);
+  }, 0);
+
+  const netSustainability = estMonthlyRevenue - estMonthlyCost;
 
   return (
     <div className="flex h-[calc(100vh)] overflow-hidden bg-[#0a1f16] font-sans relative">
@@ -266,11 +336,38 @@ export default function PlannerPage() {
         </div>
       )}
       
-      <div className="w-[450px] bg-[#0f291e] border-r border-[#1a4231] flex flex-col h-full z-20 shadow-2xl relative">
-        <div className="p-6 border-b border-[#1a4231] bg-[#0f291e] sticky top-0 z-10">
-          <h2 className="text-xl font-bold text-white mb-1">Enclosure Toolkit</h2>
-          <p className="text-xs text-emerald-200/60 mb-4">Add, remove, or modify animals in your farm</p>
-          <div className="flex gap-4 mb-4">
+      <div className={`bg-[#0f291e] border-[#1a4231] flex flex-col h-full z-20 shadow-2xl relative transition-all duration-300 shrink-0 ${isToolkitOpen ? 'w-[450px] border-r' : 'w-0 overflow-hidden'}`}>
+        <div className="w-[450px] flex flex-col h-full">
+          <div className="p-6 border-b border-[#1a4231] bg-[#0f291e] sticky top-0 z-10 flex justify-between items-start">
+            <div>
+              <h2 className="text-xl font-bold text-white mb-1">Enclosure Toolkit</h2>
+              <p className="text-xs text-emerald-200/60 mb-4">Add, remove, or modify animals in your farm</p>
+            </div>
+          </div>
+          <div className="mb-4 relative z-50">
+            <span className="text-[10px] text-emerald-200/70 mb-1 block uppercase tracking-wider">Location (City)</span>
+            <input 
+              type="text" 
+              value={locationQuery}
+              onChange={(e) => handleLocationSearch(e.target.value)}
+              className="w-full bg-[#143627] border border-[#1a4231] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500 transition text-sm shadow-inner"
+              placeholder="Search city..."
+            />
+            {showLocationDropdown && locationResults.length > 0 && (
+              <div className="absolute top-full left-0 w-full mt-1 bg-[#0f291e] border border-[#1a4231] rounded-lg shadow-2xl overflow-hidden z-50">
+                {locationResults.map((res: any, idx: number) => (
+                  <button 
+                    key={idx}
+                    onClick={() => selectLocation(res)}
+                    className="w-full text-left px-3 py-2 text-sm text-emerald-100 hover:bg-[#143627] transition border-b border-[#1a4231]/50 last:border-0"
+                  >
+                    {res.name}{res.admin1 ? `, ${res.admin1}` : ''}{res.country ? `, ${res.country}` : ''}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="flex gap-4 mb-4 z-40 relative">
             <div className="flex-1 bg-[#143627] p-3 rounded-xl border border-[#1a4231] shadow-inner">
               <span className="text-[10px] text-emerald-200/70 mb-1 block uppercase tracking-wider">Width (m)</span>
               <input 
@@ -346,41 +443,58 @@ export default function PlannerPage() {
         <div className="p-6 bg-white border-t border-slate-200">
           <button onClick={generateAutoLayout} disabled={selectedAnimals.length === 0} className="w-full bg-[#143627] text-white font-extrabold py-4 rounded-xl text-sm uppercase tracking-widest hover:bg-[#1a4231] transition">GENERATE ENCLOSURE</button>
         </div>
+        </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center p-8 bg-[#f4f5f0] h-full overflow-hidden shadow-inner">
+      <button 
+        onClick={() => setIsToolkitOpen(!isToolkitOpen)}
+        className="absolute top-8 z-[100] bg-[#143627] hover:bg-[#1a4231] text-emerald-400 font-bold border border-[#1a4231] border-l-0 rounded-r-xl p-2.5 shadow-[5px_0_15px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center text-xs"
+        style={{ left: isToolkitOpen ? '450px' : '0px' }}
+      >
+        {isToolkitOpen ? '<<' : '>>'}
+      </button>
+
+      <div className="flex-1 flex flex-col items-center justify-center p-0 bg-[#f4f5f0] h-full overflow-hidden shadow-inner">
         
-        <div className="flex-1 p-8 flex flex-col items-center justify-start max-h-[100vh] overflow-hidden gap-4 w-full max-w-5xl">
+        <div className="flex-1 px-8 pt-6 pb-4 flex flex-col items-center justify-start max-h-[100vh] overflow-hidden gap-4 w-full max-w-5xl">
             
             {/* Top Stats Bar */}
-            <div className="bg-[#14281d] rounded-2xl px-6 py-4 shadow-xl flex justify-between items-center w-full shrink-0">
+            <div className="bg-[#14281d] rounded-2xl px-4 py-3 shadow-xl flex flex-wrap justify-between items-center w-full shrink-0 gap-3">
               
-              <div className="flex gap-4">
-                <div className="bg-[#1b3627] border border-[#234733] text-emerald-100 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-inner">
-                  <Fence size={14} className="text-emerald-500" /> Plot: {validWidth}m × {validLength}m
+              <div className="flex items-center flex-wrap gap-2">
+                <div className="bg-[#1b3627] border border-[#234733] text-emerald-100 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-2 shadow-inner whitespace-nowrap">
+                  <Fence size={14} className="text-emerald-500 shrink-0" /> Plot: {validWidth}m × {validLength}m
                 </div>
-                <div className="bg-[#1b3627] border border-[#234733] text-emerald-100 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-inner">
-                  <Leaf size={14} className="text-emerald-500" /> {totalAnimalsPlaced} Animals Placed
+                <div className="bg-[#1b3627] border border-[#234733] text-emerald-100 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-2 shadow-inner whitespace-nowrap">
+                  <PawPrint size={14} className="text-emerald-500 shrink-0" /> {totalAnimalsPlaced} Placed
                 </div>
-                <div className="bg-[#1b3627] border border-[#234733] text-emerald-100 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-inner">
-                  <Heart size={14} className="text-emerald-500" /> {uniqueConflicts.length > 0 ? `${uniqueConflicts.length} Conflicts` : '100% Synergy'}
+                <div className="bg-[#1b3627] border border-[#234733] text-emerald-100 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-2 shadow-inner whitespace-nowrap">
+                  <Heart size={14} className="text-emerald-500 shrink-0" /> {uniqueConflicts.length > 0 ? `${uniqueConflicts.length} Conflicts` : '100% Synergy'}
                 </div>
+                {weather && (
+                  <div className={`border font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-2 shadow-inner whitespace-nowrap ${weather.isHot ? 'bg-red-900/30 border-red-500/50 text-red-200' : 'bg-[#1b3627] border-[#234733] text-emerald-100'}`}>
+                    <Sun size={14} className={`shrink-0 ${weather.isHot ? 'text-red-400' : 'text-amber-400'}`} /> {weather.temp}°C {weather.isHot ? '(Hot)' : ''}
+                  </div>
+                )}
               </div>
               
-              <div className="flex items-center gap-3">
+              <div className="flex items-center flex-wrap gap-2">
                 <button 
                   onClick={() => setShowConnections(!showConnections)}
-                  className={`p-2.5 rounded-xl transition ${showConnections ? 'bg-emerald-400 text-[#14281d] shadow-[0_0_15px_rgba(52,211,153,0.5)]' : 'bg-[#1b3627] hover:bg-[#234733] text-emerald-400'}`}
+                  className={`p-2 rounded-xl transition ${showConnections ? 'bg-emerald-400 text-[#14281d] shadow-[0_0_15px_rgba(52,211,153,0.5)]' : 'bg-[#1b3627] hover:bg-[#234733] text-emerald-400'}`}
                 >
                   <Heart size={16}/>
                 </button>
-                <button className="bg-[#1b3627] hover:bg-[#234733] p-2.5 rounded-xl text-emerald-400 transition"><Sun size={16}/></button>
-                <button className="bg-[#1b3627] hover:bg-[#234733] p-2.5 rounded-xl text-emerald-400 transition"><Layers size={16}/></button>
+                <button className="bg-[#1b3627] hover:bg-[#234733] p-2 rounded-xl text-emerald-400 transition"><Layers size={16}/></button>
                 
-                <button onClick={generateAutoLayout} className="bg-transparent border border-emerald-500/50 hover:bg-emerald-500 hover:border-emerald-500 text-emerald-400 hover:text-[#0a1f16] font-bold px-5 py-2.5 rounded-xl text-xs transition flex items-center gap-2 ml-2">
-                  <Save size={16}/> Save Layout
+                <button onClick={() => { setShowVisualizerModal(true); setIsVisualizerLoading(true); }} className="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold px-4 py-2 rounded-xl text-xs transition flex items-center gap-2 shadow-[0_0_15px_rgba(52,211,153,0.3)] whitespace-nowrap ml-1">
+                  <Maximize size={16} className="shrink-0"/> Visualize 3D
                 </button>
-                <button onClick={() => setShowDeleteModal(true)} className="bg-[#2a1b1b] border border-red-900/50 hover:bg-red-900 hover:text-white text-red-400 p-2.5 rounded-xl transition ml-2"><Trash2 size={16}/></button>
+
+                <button onClick={generateAutoLayout} className="bg-transparent border border-emerald-500/50 hover:bg-emerald-500 hover:border-emerald-500 text-emerald-400 hover:text-[#0a1f16] font-bold px-4 py-2 rounded-xl text-xs transition flex items-center gap-2 whitespace-nowrap">
+                  <Save size={16} className="shrink-0"/> Save
+                </button>
+                <button onClick={() => setShowDeleteModal(true)} className="bg-[#2a1b1b] border border-red-900/50 hover:bg-red-900 hover:text-white text-red-400 p-2 rounded-xl transition"><Trash2 size={16}/></button>
               </div>
             </div>
 
@@ -516,12 +630,15 @@ export default function PlannerPage() {
             </div>
 
           {/* Bottom Toolbar inside the main area like Greenplan */}
-          <div className="bg-[#14281d] rounded-2xl px-8 py-5 shadow-xl flex justify-center gap-16 items-center w-full shrink-0">
+          <div className="bg-[#14281d] rounded-2xl px-8 py-5 shadow-xl flex justify-center gap-12 items-center w-full shrink-0">
              <button onClick={() => setShowSetupModal(true)} className="flex items-center gap-3 text-emerald-400 font-bold text-sm hover:text-white transition group">
                 <Fence size={18} className="group-hover:text-emerald-300"/> Enclosure Setup
              </button>
              <button onClick={() => setShowAnalyticsModal(true)} className="flex items-center gap-3 text-white font-bold text-sm hover:text-emerald-100 transition group">
                 <BarChart3 size={18} className="text-emerald-400 group-hover:text-emerald-300"/> Animal Analytics
+             </button>
+             <button onClick={() => setShowTasksModal(true)} className="flex items-center gap-3 text-white font-bold text-sm hover:text-emerald-100 transition group">
+                <Check size={18} className="text-amber-400 group-hover:text-amber-300"/> Daily Routine
              </button>
              <button onClick={() => setShowTimeline(!showTimeline)} className={"flex items-center gap-3 font-bold text-sm transition group px-4 py-2 rounded-xl " + (showTimeline ? 'bg-emerald-500 text-[#14281d] shadow-[0_0_15px_rgba(52,211,153,0.3)]' : 'text-white hover:text-emerald-100')}>
                 <Clock size={18} className={showTimeline ? "text-[#14281d]" : "text-emerald-400 group-hover:text-emerald-300"}/> Timeline
@@ -581,14 +698,150 @@ export default function PlannerPage() {
                  </div>
                </div>
 
-               <div className="bg-[#0f291e] border border-[#1a4231] rounded-xl p-4 flex justify-between items-center">
-                 <div>
-                   <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-1">Est. Monthly Feed Cost</p>
-                   <p className="text-white font-black text-xl">~$430 Estimated</p>
+               <div className="bg-[#0f291e] border border-[#1a4231] rounded-xl p-4 flex flex-col gap-4">
+                 <div className="flex justify-between items-center pb-4 border-b border-[#1a4231]/50">
+                   <div>
+                     <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-1">Est. Monthly Feed Cost</p>
+                     <p className="text-red-400 font-black text-xl">-${estMonthlyCost}</p>
+                   </div>
+                   <div className="text-right">
+                     <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-1">Est. Monthly Revenue (Yield)</p>
+                     <p className="text-emerald-400 font-black text-xl">+${estMonthlyRevenue}</p>
+                   </div>
                  </div>
-                 <Leaf className="text-emerald-500/50" size={32}/>
+                 <div className="flex justify-between items-center">
+                   <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold">Net Sustainability (ROI)</p>
+                   <p className={`font-black text-2xl ${netSustainability >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                     {netSustainability >= 0 ? '+' : ''}${netSustainability}
+                   </p>
+                 </div>
                </div>
 
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Daily Tasks Modal */}
+      {showTasksModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-[#143627] rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-[#1a4231] flex flex-col">
+            <div className="p-6 border-b border-[#1a4231] flex justify-between items-center bg-[#0f291e]">
+              <h2 className="text-xl font-bold text-white flex items-center gap-3">
+                <Check className="text-emerald-400" size={24}/> Generated Daily Routine
+              </h2>
+              <button onClick={() => setShowTasksModal(false)} className="p-2 hover:bg-[#1a4231] rounded-full text-slate-400 hover:text-white transition">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+              {selectedAnimals.length === 0 ? (
+                <p className="text-emerald-200/60 text-center py-10">Add animals to your farm to generate a daily routine.</p>
+              ) : (
+                <div className="space-y-6">
+                  {/* Morning Tasks */}
+                  <div>
+                    <h3 className="text-emerald-400 font-black text-sm uppercase tracking-widest mb-3 flex items-center gap-2"><Sun size={16}/> Morning (06:00 - 09:00)</h3>
+                    <div className="space-y-2">
+                      {selectedAnimals.map(a => {
+                        const s = speciesLibrary.find(sp => sp.id === a.id);
+                        if (!s) return null;
+                        return (
+                          <div key={a.id + '-m'} className="bg-[#0f291e] border border-[#1a4231] p-3 rounded-lg flex gap-3 text-emerald-50">
+                            <input type="checkbox" className="mt-1 accent-emerald-500" />
+                            <span>Feed {s.feedType} to {s.name}(s) and clean the {s.category === 'Poultry' ? 'coop' : 'pasture'}.</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  {/* Afternoon Tasks */}
+                  <div>
+                    <h3 className="text-amber-400 font-black text-sm uppercase tracking-widest mb-3 flex items-center gap-2"><Sun size={16}/> Afternoon (12:00 - 15:00)</h3>
+                    <div className="space-y-2">
+                      {selectedAnimals.map(a => {
+                        const s = speciesLibrary.find(sp => sp.id === a.id);
+                        if (!s || (s.water !== 'High' && s.water !== 'Very High')) return null;
+                        return (
+                          <div key={a.id + '-a'} className="bg-[#0f291e] border border-[#1a4231] p-3 rounded-lg flex gap-3 text-emerald-50">
+                            <input type="checkbox" className="mt-1 accent-emerald-500" />
+                            <span>Refill water troughs for {s.name}(s) (High water needs).</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  {/* Evening Tasks */}
+                  <div>
+                    <h3 className="text-blue-400 font-black text-sm uppercase tracking-widest mb-3 flex items-center gap-2"><Layers size={16}/> Evening (17:00 - 19:00)</h3>
+                    <div className="space-y-2">
+                      {selectedAnimals.map(a => {
+                        const s = speciesLibrary.find(sp => sp.id === a.id);
+                        if (!s) return null;
+                        return (
+                          <div key={a.id + '-e'} className="bg-[#0f291e] border border-[#1a4231] p-3 rounded-lg flex gap-3 text-emerald-50">
+                            <input type="checkbox" className="mt-1 accent-emerald-500" />
+                            <span>{s.yieldName ? `Collect ${s.yieldName} from ${s.name}(s) and ` : ''}Secure {s.name}(s) against predators.</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 3D Visualizer Modal */}
+      {showVisualizerModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-[#143627] rounded-3xl w-full max-w-4xl overflow-hidden shadow-[0_0_50px_rgba(52,211,153,0.2)] border border-emerald-500/30 flex flex-col">
+            <div className="p-6 border-b border-[#1a4231] flex justify-between items-center bg-[#0f291e]">
+              <h2 className="text-xl font-bold text-white flex items-center gap-3">
+                <button 
+                  onClick={() => {
+                    const img = document.getElementById('visualizer-img');
+                    if (img && img.requestFullscreen) {
+                      img.requestFullscreen();
+                    }
+                  }} 
+                  className="hover:scale-110 transition p-1"
+                  title="Fullscreen Image"
+                >
+                  <Maximize className="text-emerald-400" size={24}/>
+                </button>
+                AI Farm Visualizer
+              </h2>
+              <button onClick={() => setShowVisualizerModal(false)} className="p-2 hover:bg-[#1a4231] rounded-full text-slate-400 hover:text-white transition">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="p-8 flex flex-col items-center justify-center min-h-[500px]">
+              {selectedAnimals.length === 0 ? (
+                <p className="text-emerald-200/60 text-center py-10">Add animals to your farm to visualize it.</p>
+              ) : (
+                <div className="w-full h-full flex flex-col items-center gap-4">
+                  <img 
+                    id="visualizer-img"
+                    src={`https://image.pollinations.ai/prompt/${encodeURIComponent(`A breathtaking, vibrant Pixar style 3D render of a joyful farm sanctuary featuring ${selectedAnimals.map(a => { const s = speciesLibrary.find(sp => sp.id === a.id); return s ? `${a.count} ${s.name}s` : '' }).filter(Boolean).join(', ')}. Lush green stylized grass, wooden fences, beautiful rustic red barn, warm golden hour sunlight, blooming wildflowers, magical atmosphere, ultra-detailed, 8k resolution, Unreal Engine 5 render, masterpiece`)}?width=1024&height=576&nologo=true`}
+                    alt="AI Generated Farm"
+                    className="w-full h-auto rounded-xl shadow-2xl border border-emerald-500/20 cursor-pointer"
+                    onClick={(e) => e.currentTarget.requestFullscreen()}
+                    onLoad={() => setIsVisualizerLoading(false)}
+                    onError={() => setIsVisualizerLoading(false)}
+                    style={isVisualizerLoading ? { display: 'none' } : {}}
+                  />
+                  {isVisualizerLoading && (
+                    <div className="flex flex-col items-center gap-4 text-emerald-400 my-auto">
+                      <RefreshCw className="animate-spin" size={40} />
+                      <p className="font-bold tracking-widest uppercase">Generating 3D Render...</p>
+                    </div>
+                  )}
+                  <p className="text-xs text-emerald-200/40 text-center">Powered by Pollinations AI</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
