@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Info, Waves, Minus, Plus, RefreshCw, Heart, Sun, Layers, Save, Trash2, Fence, X, Wheat, Droplets, Calendar, Maximize, AlertTriangle, ShieldCheck, PawPrint } from "lucide-react";
+import { Info, Waves, Minus, Plus, RefreshCw, Heart, Sun, Layers, Save, Trash2, Fence, X, Wheat, Droplets, Calendar, Maximize, AlertTriangle, ShieldCheck, PawPrint, BarChart3, Check, Clock } from "lucide-react";
 
 type AnimalSpecies = { 
   id: string; 
