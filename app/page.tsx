@@ -366,11 +366,13 @@ export default function OnboardingWizard() {
               <div className="grid grid-cols-3 gap-4">
                 {filteredSpecies.map(sp => {
                   const isSelected = selectedAnimals.some(a => a.id === sp.id);
+                  const isSpaceExceeded = !isSelected && (usedArea + sp.spaceRequired > totalArea);
+                  
                   return (
                     <div 
                       key={sp.id} 
-                      onClick={() => handleToggleAnimal(sp.id)}
-                      className={`p-4 rounded-xl border-2 cursor-pointer transition flex flex-col ${isSelected ? 'border-emerald-600 bg-emerald-50 shadow-sm ring-1 ring-emerald-500/20' : 'border-slate-200 bg-white hover:border-emerald-300'}`}
+                      onClick={() => !isSpaceExceeded && handleToggleAnimal(sp.id)}
+                      className={`p-4 rounded-xl border-2 transition flex flex-col ${isSpaceExceeded ? 'border-slate-100 bg-slate-50 opacity-50 cursor-not-allowed' : isSelected ? 'border-emerald-600 bg-emerald-50 shadow-sm ring-1 ring-emerald-500/20 cursor-pointer' : 'border-slate-200 bg-white hover:border-emerald-300 cursor-pointer'}`}
                     >
                       <div className="flex justify-between items-start mb-3">
                         <span className="text-4xl">{sp.icon}</span>
@@ -384,9 +386,11 @@ export default function OnboardingWizard() {
                       <h4 className="font-bold text-[#143627] mb-4">{sp.name}</h4>
                       
                       <div className="mt-auto flex justify-between items-center border-t border-slate-200/60 pt-3">
-                        <span className="text-xs font-bold text-emerald-600 flex items-center gap-1"><Leaf size={12}/> {sp.spaceRequired} sq m</span>
+                        <span className={`text-xs font-bold flex items-center gap-1 ${isSpaceExceeded ? 'text-slate-400' : 'text-emerald-600'}`}><Leaf size={12}/> {sp.spaceRequired} sq m</span>
                         {isSelected ? (
                           <span className="text-xs font-bold text-[#143627]">✓ Selected</span>
+                        ) : isSpaceExceeded ? (
+                          <span className="text-[9px] font-bold text-red-500 uppercase tracking-widest leading-tight text-right w-20">No Space</span>
                         ) : (
                           <span className="text-xs font-bold text-slate-400">Select</span>
                         )}
