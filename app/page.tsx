@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Leaf, ArrowRight, Fence, Heart, Droplets, Check, Sprout, ArrowLeft, Plus, Minus, Search, X, PawPrint, Sparkles } from "lucide-react";
+import { Leaf, ArrowRight, Fence, Heart, Droplets, Check, Sprout, ArrowLeft, Plus, Minus, Search, X, PawPrint, Sparkles, AlertTriangle } from "lucide-react";
 
 // Mock species library just for the setup wizard
 const speciesLibrary = [
@@ -102,7 +102,25 @@ export default function OnboardingWizard() {
     }));
   };
 
-  const filteredSpecies = speciesLibrary.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  const getConflicts = () => {
+    let conflicts: string[] = [];
+    selectedAnimals.forEach(a1 => {
+      const sp1 = speciesLibrary.find(s => s.id === a1.id);
+      if (!sp1) return;
+      selectedAnimals.forEach(a2 => {
+        if (a1.id !== a2.id) {
+          const sp2 = speciesLibrary.find(s => s.id === a2.id);
+          if (sp2 && (sp1.enemies.includes(sp2.name) || sp2.enemies.includes(sp1.name))) {
+            const conflictName = [sp1.name, sp2.name].sort().join(' & ');
+            if (!conflicts.includes(conflictName)) conflicts.push(conflictName);
+          }
+        }
+      });
+    });
+    return conflicts;
+  };
+
+  const filteredSpecies = speciesLibrary.filter(sp => sp.name.toLowerCase().includes(searchQuery.toLowerCase()) || sp.category.toLowerCase().includes(searchQuery.toLowerCase()));
 
   if (step === 0) {
     return (
@@ -229,7 +247,7 @@ export default function OnboardingWizard() {
                     onClick={() => { setWidth(preset[0]); setLength(preset[1]); }}
                     className={`p-4 rounded-xl border-2 transition ${width === preset[0] && length === preset[1] ? 'border-[#143627] bg-[#143627] text-white' : 'border-slate-200 hover:border-emerald-300 text-slate-600 bg-white'}`}
                   >
-                    <div className="font-bold text-sm mb-1">{preset[0]}' × {preset[1]}'</div>
+                    <div className="font-bold text-sm mb-1">{preset[0]}m × {preset[1]}m</div>
                     <div className={width === preset[0] && length === preset[1] ? 'text-emerald-400 text-xs' : 'text-slate-400 text-xs'}>{preset[0]*preset[1]} sq m</div>
                   </button>
                 ))}
@@ -316,6 +334,23 @@ export default function OnboardingWizard() {
                   style={{ width: `${Math.min(100, (usedArea / (totalArea || 1)) * 100)}%` }}
                 ></div>
               </div>
+
+              {(() => {
+                const conflicts = getConflicts();
+                if (conflicts.length === 0) return null;
+                return (
+                  <div className="mb-6 bg-red-50 border-2 border-red-200 rounded-xl p-4 flex gap-3 items-start animate-in fade-in zoom-in duration-300">
+                    <AlertTriangle className="text-red-500 shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <h4 className="font-bold text-red-700 text-sm mb-1">Ecosystem Conflict Warning</h4>
+                      <p className="text-red-600/80 text-xs font-medium leading-relaxed">
+                        You have selected incompatible species: <span className="font-bold">{conflicts.join(', ')}</span>. 
+                        They will attack or severely stress each other. We highly recommend separating predators from prey or removing one of them from this specific plot to maintain farm sustainability.
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()}
 
               <div className="relative mb-6">
                 <Search className="absolute left-4 top-3.5 text-slate-400" size={18} />

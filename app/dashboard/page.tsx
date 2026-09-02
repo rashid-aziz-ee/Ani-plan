@@ -158,7 +158,8 @@ export default function PlannerPage() {
     if (sp) {
       sp.enemies.forEach(enemy => {
         if (selectedSpeciesNames.includes(enemy)) {
-          conflictList.push(`${sp.name} & ${enemy}`);
+          const pair = [sp.name, enemy].sort().join(' & ');
+          conflictList.push(pair);
         }
       });
     }
@@ -320,11 +321,15 @@ export default function PlannerPage() {
 
   const estMonthlyRevenue = selectedAnimals.reduce((total, item) => {
     const sp = speciesLibrary.find(s => s.id === item.id);
-    if (!sp || !sp.yieldValue) return total;
+    if (!sp || !sp.yieldValue || sp.category === 'Wild' || sp.category === 'Exotic') return total;
     return total + (sp.yieldValue * item.count);
   }, 0);
 
-  const netSustainability = estMonthlyRevenue - estMonthlyCost;
+  const conservationImpact = selectedAnimals.reduce((total, item) => {
+    const sp = speciesLibrary.find(s => s.id === item.id);
+    if (!sp || !sp.yieldValue || (sp.category !== 'Wild' && sp.category !== 'Exotic')) return total;
+    return total + (sp.yieldValue * item.count);
+  }, 0);
 
   return (
     <div className="flex h-[calc(100vh)] overflow-hidden bg-[#0a1f16] font-sans relative">
@@ -668,11 +673,11 @@ export default function PlannerPage() {
                <div className="bg-[#0f291e] border border-[#1a4231] rounded-xl p-4 flex justify-between items-center">
                  <div>
                    <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-1">Total Enclosure Area</p>
-                   <p className="text-white font-black text-xl">{totalArea} sq ft ({Math.round(totalArea * 0.0929)} m²)</p>
+                   <p className="text-white font-black text-xl">{totalArea} sq.m</p>
                  </div>
                  <div className="text-right">
                    <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold mb-1">Space Utilized</p>
-                   <p className="text-white font-black text-xl">{usedArea} sq ft</p>
+                   <p className="text-white font-black text-xl">{usedArea} sq.m</p>
                  </div>
                </div>
 
@@ -711,11 +716,19 @@ export default function PlannerPage() {
                    </div>
                  </div>
                  <div className="flex justify-between items-center">
-                   <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold">Net Sustainability (ROI)</p>
-                   <p className={`font-black text-2xl ${netSustainability >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                     {netSustainability >= 0 ? '+' : ''}${netSustainability}
+                   <p className="text-[10px] text-emerald-400 uppercase tracking-widest font-bold">Net Profitability</p>
+                   <p className={`font-black text-2xl ${estMonthlyRevenue - estMonthlyCost >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                     {estMonthlyRevenue - estMonthlyCost >= 0 ? '+' : ''}${estMonthlyRevenue - estMonthlyCost}
                    </p>
                  </div>
+                 {conservationImpact > 0 && (
+                   <div className="flex justify-between items-center pt-4 mt-2 border-t border-[#1a4231]/50">
+                     <p className="text-[10px] text-blue-400 uppercase tracking-widest font-bold">Conservation & Enrichment Score</p>
+                     <p className="font-black text-xl text-blue-400">
+                       +{conservationImpact} Impact Pts
+                     </p>
+                   </div>
+                 )}
                </div>
 
             </div>
