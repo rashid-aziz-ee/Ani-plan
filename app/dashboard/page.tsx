@@ -839,7 +839,7 @@ export default function PlannerPage() {
                 <div className="w-full h-full flex flex-col items-center gap-4">
                   <img 
                     id="visualizer-img"
-                    src={`https://image.pollinations.ai/prompt/${encodeURIComponent(`A photorealistic wide-angle shot of an animal sanctuary. EXACTLY THESE ANIMALS MUST BE PRESENT: ${selectedAnimals.map(a => { const s = speciesLibrary.find(sp => sp.id === a.id); return s ? `${a.count} ${s.name}(s)` : '' }).filter(Boolean).join(' AND ')}. The animals are clearly visible and separated in their respective habitats. Natural lighting, realistic photography, highly detailed, nature documentary style`)}?width=1024&height=576&nologo=true`}
+                    src={`https://image.pollinations.ai/prompt/${encodeURIComponent(`A highly detailed, realistic photo of exactly these animals standing together in a sanctuary field: ${selectedAnimals.map(a => { const s = speciesLibrary.find(sp => sp.id === a.id); return s ? `${a.count} ${s.name}` : '' }).filter(Boolean).join(', ')}. Photorealistic, 8k resolution, nature photography`)}?width=1024&height=576&nologo=true&seed=${Math.floor(Math.random() * 1000000)}`}
                     alt="AI Generated Farm"
                     className="w-full h-auto rounded-xl shadow-2xl border border-emerald-500/20 cursor-pointer"
                     onClick={(e) => e.currentTarget.requestFullscreen()}
